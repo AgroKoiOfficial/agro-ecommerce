@@ -21,7 +21,7 @@ const Skeleton = () => (
 
 export async function getStaticProps() {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/api/carousel`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/carousel`);
     if (!res.ok) {
       throw new Error(`Failed to fetch carousels, status: ${res.status}`);
     }

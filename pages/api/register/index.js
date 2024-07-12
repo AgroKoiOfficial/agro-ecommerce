@@ -13,18 +13,26 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
+  if (password.length < 6 || password.length > 20) {
+    return res.status(400).json({ message: "Password must be between 6 and 20 characters" });
+  }
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({ message: "Password must contain both letters and numbers" });
+  }
+
   const existingUser = await prisma.user.findFirst({
     where: {
       email,
     },
   });
-  
 
   if (existingUser) {
     return res.status(409).json({ message: "User already exists" });
   }
 
-  const isAdminEmail = email.endsWith("admin@example.com");
+  const isAdminEmail = email.endsWith(`${process.env.ADMIN_EMAIL}`);
   const role = isAdminEmail ? "ADMIN" : "USER";
 
   const hashedPassword = await argon2.hash(password);

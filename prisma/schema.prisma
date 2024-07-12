@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -19,7 +20,6 @@ model User {
   cart      Cart[]
   address   Address[]
   reviews   Review[]
-  payments  Payment[]
   checkouts Checkout[]
 
   createdAt DateTime @default(now())
@@ -121,24 +121,10 @@ model Checkout {
   couponId            String?
   coupon              Coupon?       @relation(fields: [couponId], references: [id])
   adminWhatsAppNumber String?
-  payments            Payment[]
   status              PaymentStatus
   createdAt           DateTime      @default(now())
 
   @@map("checkouts")
-}
-
-model Payment {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id])
-  checkoutId String
-  checkout   Checkout      @relation(fields: [checkoutId], references: [id])
-  total      Decimal
-  quantity   Int
-  status     PaymentStatus
-
-  @@map("payments")
 }
 
 model Coupon {
@@ -234,7 +220,7 @@ model CompanyContact {
   email     String
   phone     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
 
   @@map("company_contacts")
 }
@@ -265,7 +251,6 @@ model Webhook {
   id         String   @id
   receivedAt DateTime
 }
-
 
 enum Role {
   USER

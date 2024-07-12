@@ -38,7 +38,7 @@ export default function Products({ products, totalProducts }) {
     setLoading(true);
     const nextPage = page + 1;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}?page=${nextPage}`
+      `${process.env.NEXT_PUBLIC_API_URL}/products?page=${nextPage}`
     );
 
     if (response.ok) {

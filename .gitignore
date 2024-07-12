@@ -33,10 +33,7 @@ yarn-error.log*
 prisma/migrations/
 
 # media 
-public/videos/
-public/images/
-public/carousels/
-public/about/
+
 
 # vercel
 .vercel

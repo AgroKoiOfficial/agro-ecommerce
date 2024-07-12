@@ -4,7 +4,7 @@ import Image from "next/image";
 import CompanyContact from "@/components/CompanyContact";
 
 export async function getServerSideProps() {
-  const response = await fetch(`${process.env.BASE_URL}/api/abouts`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/abouts`);
   const data = await response.json();
 
   if (!data || data.length === 0) {
